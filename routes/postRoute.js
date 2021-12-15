@@ -28,7 +28,7 @@ router
   .get(post_list_get)
   .post(
     upload.single("img"),
-    body("title").notEmpty().escape(),
+    body("title"),
     body("content").notEmpty().escape(),
     post_post
   );

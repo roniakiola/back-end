@@ -31,25 +31,29 @@ const getAllPosts = async (id, next) => {
   }
 };
 
-const getPost = async (id, next) => {
+const getPost = async (id, postid, next) => {
   try {
     const [rows] = await promisePool.execute(
       `
       SELECT 
-      post.id,
-      title, 
-      content, 
+      post.id, 
+      title,
+      content,
       post.img,
       post.created,
       post.category,
-      owner, 
-      parent, 
-      user.username as ownername
-      FROM post 
-      JOIN user ON
-      post.owner = user.id
-	    WHERE post.id = ?`,
-      [id]
+      post.owner,
+      user.username AS ownername
+      FROM post
+      INNER JOIN category
+      ON post.category = category.id
+      INNER JOIN user
+      ON post.owner = user.id
+      WHERE category.id = ?
+      AND post.parent = ?
+      OR post.id = ?
+      `,
+      [id, postid, postid]
     );
     return rows;
   } catch (e) {
@@ -58,11 +62,14 @@ const getPost = async (id, next) => {
   }
 };
 
-const addPost = async (title, content, img, owner, category, next) => {
+const addPost = async (title, content, img, owner, category, parent, next) => {
   try {
+    if (parent == '') {
+      parent = null;
+    };
     const [rows] = await promisePool.execute(
-      "INSERT INTO post (title, content, img, owner, category) VALUES (?, ?, ?, ?, ?)",
-      [title, content, img, owner, category]
+      "INSERT INTO post (title, content, img, owner, category, parent) VALUES (?, ?, ?, ?, ?, ?)",
+      [title, content, img, owner, category, parent]
     );
     return rows;
   } catch (e) {

@@ -27,9 +27,9 @@ const post_list_get = async (req, res, next) => {
 
 const post_get = async (req, res, next) => {
   try {
-    const vastaus = await getPost(req.params.id, next);
+    const vastaus = await getPost(req.params.id, req.params.postid, next);
     if (vastaus.length > 0) {
-      res.json(vastaus.pop());
+      res.json(vastaus);
     } else {
       next(httpError("No post found", 404));
     }
@@ -55,7 +55,7 @@ const post_post = async (req, res, next) => {
       tiedosto = req.file.filename;
     }
 
-    const { title, content, category } = req.body;
+    const { title, content, category, parent } = req.body;
 
     const tulos = await addPost(
       title,
@@ -63,6 +63,7 @@ const post_post = async (req, res, next) => {
       tiedosto,
       req.user.id,
       category,
+      parent,
       next
     );
 
