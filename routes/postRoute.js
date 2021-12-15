@@ -26,6 +26,7 @@ const router = express.Router();
 router
   .route("/:id")
   .get(post_list_get)
+  .delete(post_delete)
   .post(
     upload.single("img"),
     body("title"),
@@ -35,7 +36,6 @@ router
 router
   .route("/:id/:postid")
   .get(post_get)
-  .delete(post_delete)
   .put(
     body("title").notEmpty().escape(),
     body("content").notEmpty().escape(),
