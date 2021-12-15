@@ -22,7 +22,8 @@ const getAllPosts = async (id, next) => {
        INNER JOIN category 
        ON post.category = category.id 
        WHERE post.parent IS NULL 
-       AND category.id = ?`, [id]);
+       AND category.id = ?
+       ORDER BY created DESC`, [id]);
     return rows;
   } catch (e) {
     console.error("getAllPosts error", e.message);

@@ -33,7 +33,7 @@ router
     post_post
   );
 router
-  .route("/:id")
+  .route("/:id/:postid")
   .get(post_get)
   .delete(post_delete)
   .put(
