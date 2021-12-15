@@ -17,7 +17,7 @@ const getAllPosts = async (id, next) => {
        post.owner,
        user.username AS ownername
        FROM post 
-       JOIN user
+       INNER JOIN user
        ON post.owner = user.id
        INNER JOIN category 
        ON post.category = category.id 
