@@ -1,8 +1,8 @@
 {
-  "name": "week2",
+  "name": "metrolauta",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app2.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
