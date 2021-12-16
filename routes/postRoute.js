@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 // postRoute
-const express = require("express");
-const { body } = require("express-validator");
-const multer = require("multer");
+const express = require('express');
+const { body } = require('express-validator');
+const multer = require('multer');
 const fileFilter = (req, file, cb) => {
   if (file.filename) {
-    if (file.mimetype.includes("image")) {
+    if (file.mimetype.includes('image')) {
       cb(null, true);
     } else {
       cb(null, false);
@@ -13,32 +13,36 @@ const fileFilter = (req, file, cb) => {
   }
   cb(null, true);
 };
-const upload = multer({ dest: "./uploads/", fileFilter });
+const upload = multer({ dest: './uploads/', fileFilter });
 const {
   post_list_get,
   post_get,
   post_post,
   post_put,
   post_delete,
-} = require("../controllers/postController");
+  post_user_get,
+} = require('../controllers/postController');
 const router = express.Router();
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(post_list_get)
   .delete(post_delete)
   .post(
-    upload.single("img"),
-    body("title"),
-    body("content").notEmpty().escape(),
+    upload.single('img'),
+    body('title'),
+    body('content').notEmpty().escape(),
     post_post
   );
+
+router.route('/:userPost').get(post_user_get);
+
 router
-  .route("/:id/:postid")
+  .route('/:id/:postid')
   .get(post_get)
   .put(
-    body("title").notEmpty().escape(),
-    body("content").notEmpty().escape(),
+    body('title').notEmpty().escape(),
+    body('content').notEmpty().escape(),
     post_put
   );
 

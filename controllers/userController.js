@@ -1,8 +1,8 @@
-"use strict";
-const { validationResult } = require("express-validator");
+'use strict';
+const { validationResult } = require('express-validator');
 // userController
-const { getAllUsers, getUser, deleteUser } = require("../models/userModel");
-const { httpError } = require("../utils/errors");
+const { getAllUsers, getUser, deleteUser } = require('../models/userModel');
+const { httpError } = require('../utils/errors');
 
 const user_list_get = async (req, res, next) => {
   try {
@@ -10,11 +10,11 @@ const user_list_get = async (req, res, next) => {
     if (users.length > 0) {
       res.json(users);
     } else {
-      next("No users found", 404);
+      next('No users found', 404);
     }
   } catch (e) {
-    console.log("user_list_get error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('user_list_get error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
@@ -22,13 +22,13 @@ const user_get = async (req, res, next) => {
   try {
     const vastaus = await getUser(req.params.id, next);
     if (vastaus.length > 0) {
-      res.json(vastaus.pop());
+      res.json(vastaus);
     } else {
-      next(httpError("No user found", 404));
+      next(httpError('No user found', 404));
     }
   } catch (e) {
-    console.log("user_get error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('user_get error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
@@ -42,21 +42,21 @@ const user_delete = async (req, res, next) => {
     );
     if (vastaus.affectedRows > 0) {
       res.json({
-        message: "user deleted",
+        message: 'user deleted',
         id: vastaus.insertId,
       });
     } else {
-      next(httpError("No user found", 404));
+      next(httpError('No user found', 404));
     }
   } catch (e) {
-    console.log("user_delete error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('user_delete error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
 const checkToken = (req, res, next) => {
   if (!req.user) {
-    next(new Error("token not valid"));
+    next(new Error('token not valid'));
   } else {
     res.json({ user: req.user });
   }
